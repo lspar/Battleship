@@ -16,6 +16,7 @@ def shoot(ships: set, grid: list, hits:set, row: int, col:int):
         else:
             grid[row][col] = "0"
             return "Miss!"
+    return "Repeat!"
 
 
 def main():

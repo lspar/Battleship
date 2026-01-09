@@ -9,7 +9,6 @@ def shoot(ships: set, grid: list, hits:set, row: int, col:int):
     #This function takes in a grid for battelship, ships placement, and returns a hit or miss depending
     #on the placement of the ships compared to the grid.
     if grid[row][col] !="X" and grid[row][col]!="0":
-        return "Repeat!"
         if (row, col) in ships:
             grid[row][col] = "X"
             hits.add((row,col))

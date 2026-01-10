@@ -3,7 +3,7 @@ import pandas as pd
 from game import shoot
 import copy
 
-st.title("Battleship")
+st.title("Battleship!")
 
 def make_grid():
         grid= []

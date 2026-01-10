@@ -23,8 +23,20 @@ if "ships" not in st.session_state:
 if "hits" not in st.session_state:
         st.session_state.hits = set()
 
+if "message" not in st.session_state:
+        st.session_state.message = ""
+
+
+row = st.selectbox("Row",(0,1,2,3,4,5,6,7))
+col = st.selectbox("Column", (0,1,2,3,4,5,6,7))
+if st.button("Fire!"):
+        st.session_state.message = shoot(st.session_state.ships, st.session_state.grid, st.session_state.hits, row, col)
+        if st.session_state.message == "Hit!":
+                st.info("Hit!")
+        elif st.session_state.message == "Miss!":
+                st.info("Miss!")
+        else:
+                st.info("Repeat!")
+
 df = pd.DataFrame(st.session_state.grid) #creates a table with the grid we made
 st.table(df)
-
-st.selectbox("Row",(0,1,2,3,4,5,6,7))
-st.selectbox("Column", (0,1,2,3,4,5,6,7))

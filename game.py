@@ -4,6 +4,7 @@ Step 1) Define main(), make a list with 8 squiggles and print it
 '''
 
 import copy
+import random 
 
 def shoot(ships: set, grid: list, hits:set, row: int, col:int):
     #This function takes in a grid for battelship, ships placement, and returns a hit or miss depending
@@ -52,6 +53,46 @@ def main():
     print(hits)
     '''
 
+def get_ships():
+    #choose h or.v
+    #pick a valid start
+    horizontal="Horizontal"
+    vertical="Vertical"
+    two_options=[horizontal, vertical]
+    chosen_option=random.choice(two_options)
+    if chosen_option=="Horizontal":
+        #set the range of row 0-7
+        # range col 0-6
+        #choosing starting coord
+        horizontal_set=set()
+        row_options=list(range(8))
+        col_options=list(range(7))
+        chosen_row=random.choice(row_options)
+        chosen_col=random.choice(col_options)
+        #Put it into a tuple
+        horizontal_set.add((chosen_row, chosen_col))
+        horizontal_set.add((chosen_row, chosen_col+1))
+        return horizontal_set
+   
+
+    else:
+        #vertical starting  coord
+        vertical_set=set()
+        row_options=list(range(7))
+        col_options=list(range(8))
+        chosen_row=random.choice(row_options)
+        chosen_col=random.choice(col_options)
+        #Put it into tuple 
+        #vertical_set.add((chosen_row, chosen_col), (chosen_row+1, chosen_col))
+        vertical_set.add((chosen_row, chosen_col))
+        vertical_set.add((chosen_row+1, chosen_col))
+        return vertical_set
+    
+
+
+
+
 main()
+print(get_ships())
 
 

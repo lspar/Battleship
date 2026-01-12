@@ -1,12 +1,10 @@
 import streamlit as st
 import pandas as pd 
 from game import shoot
+from game import get_ships
 import copy
 
 st.title("Battleship!")
-
-
-
 
 def make_grid():
         grid= []
@@ -20,7 +18,7 @@ if "grid" not in st.session_state:
         st.session_state.grid = make_grid()
 
 if "ships" not in st.session_state:
-        st.session_state.ships = {(1,2), (1,3)}
+        st.session_state.ships = get_ships()
 
 if "hits" not in st.session_state:
         st.session_state.hits = set()
@@ -33,7 +31,7 @@ if "button_clicked" not in st.session_state:
 
 def reset_game():
         st.session_state.grid=make_grid()
-        st.session_state.ships = {(1,2), (1,3)}
+        st.session_state.ships = get_ships()
         st.session_state.hits = set()
         st.session_state.message = ""
         st.session_state.button_clicked=False

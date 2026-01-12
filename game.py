@@ -60,6 +60,7 @@ def get_ships():
     vertical="Vertical"
     two_options=[horizontal, vertical]
     chosen_option=random.choice(two_options)
+
     if chosen_option=="Horizontal":
         #set the range of row 0-7
         # range col 0-6
@@ -73,8 +74,6 @@ def get_ships():
         horizontal_set.add((chosen_row, chosen_col))
         horizontal_set.add((chosen_row, chosen_col+1))
         return horizontal_set
-   
-
     else:
         #vertical starting  coord
         vertical_set=set()
@@ -87,12 +86,17 @@ def get_ships():
         vertical_set.add((chosen_row, chosen_col))
         vertical_set.add((chosen_row+1, chosen_col))
         return vertical_set
-    
 
+def all_ships():
+    all = []
+    num = random.randint(3,6)
+    for ship in range(num):
+        all.append(get_ships())
+    return all
+        
 
-
-
-main()
-print(get_ships())
+#main()
+#print(get_ships())
+print(all_ships())
 
 

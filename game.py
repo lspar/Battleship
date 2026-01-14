@@ -4,7 +4,9 @@ Step 1) Define main(), make a list with 8 squiggles and print it
 '''
 
 import copy
-import random 
+import random
+from bakery import assert_equal
+
 
 def shoot(ships: set, grid: list, hits:set, row: int, col:int):
     #This function takes in a grid for battelship, ships placement, and returns a hit or miss depending
@@ -18,6 +20,20 @@ def shoot(ships: set, grid: list, hits:set, row: int, col:int):
             grid[row][col] = "0"
             return "Miss!"
     return "Repeat!"
+
+ships= {(3,4), (5,6)}
+grid=[["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"],
+      ["~", "~", "~", "~", "~", "~", "~", "~"]]
+
+assert_equal(shoot(ships, grid, set(), 3, 4), "Hit!")
+assert_equal(shoot(ships, grid, set(), 2, 4), "Miss!")
+assert_equal(shoot(ships, grid, set(), 3, 4), "Repeat!")
 
 
 def main():

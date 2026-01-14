@@ -88,15 +88,28 @@ def get_ships():
         return vertical_set
 
 def all_ships():
-    all = []
-    num = random.randint(3,6)
-    for ship in range(num):
-        all.append(get_ships())
+    all=set()
+    num=random.randint(3,5)
+    while len(all) < num*2:
+        ship=get_ships()
+        if all.isdisjoint(ship):
+            all.update(ship)
     return all
-        
+     
 
 #main()
 #print(get_ships())
 print(all_ships())
 
+
+
+'''
+    all = set() #should be a set of tuples {}
+    num = random.randint(3,6)
+    print (num)
+    for ship in range(num):
+        if ship not in all:
+            all.update(get_ships())
+    return all
+'''
 

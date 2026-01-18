@@ -69,7 +69,7 @@ def main():
     print(hits)
     '''
 
-def get_ships():
+def get_ship():
     #choose h or.v
     #pick a valid start
     horizontal="Horizontal"
@@ -102,12 +102,25 @@ def get_ships():
         vertical_set.add((chosen_row, chosen_col))
         vertical_set.add((chosen_row+1, chosen_col))
         return vertical_set
+    
+def is_valid_ship(ship: set):
+    assert_equal(len(ship), 2)
+
+    coords = list(ship)
+    (r1, c1), (r2, c2) = coords #unpacks each value
+
+    manhattan_distance = abs(r1 - r2) + abs(c1 - c2)
+    assert_equal(manhattan_distance, 1)
+    
+
+
+
 
 def all_ships():
     all=set()
     num=random.randint(3,5)
     while len(all) < num*2:
-        ship=get_ships()
+        ship=get_ship()
         if all.isdisjoint(ship):
             all.update(ship)
     return all

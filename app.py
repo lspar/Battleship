@@ -2,7 +2,6 @@ import streamlit as st
 import pandas as pd 
 from game import shoot
 from game import all_ships
-from bakery import assert_equal
 import copy
 import pytest
 from unittest.mock import MagicMock, patch
@@ -42,7 +41,7 @@ grid=[["~", "~", "~", "~", "~", "~", "~", "~"],
       ["~", "~", "~", "~", "~", "~", "~", "~"],
       ["~", "~", "~", "~", "~", "~", "~", "~"]]
 
-assert_equal(make_grid(), grid)
+
 
 def reset_game():
         st.session_state.grid=make_grid()

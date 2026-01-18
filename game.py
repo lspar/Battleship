@@ -111,7 +111,13 @@ def is_valid_ship(ship: set):
 
     manhattan_distance = abs(r1 - r2) + abs(c1 - c2)
     assert_equal(manhattan_distance, 1)
-    
+
+def test_ship():
+    for i in range(100):
+        ship = get_ship()
+        is_valid_ship(ship)
+
+test_ship()
 
 
 

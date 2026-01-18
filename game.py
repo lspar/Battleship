@@ -109,6 +109,10 @@ def is_valid_ship(ship: set):
     coords = list(ship)
     (r1, c1), (r2, c2) = coords #unpacks each value
 
+    for r, c in coords:
+        assert_equal(0 <= r <= 7, True)
+        assert_equal(0 <= c <= 7, True)
+
     manhattan_distance = abs(r1 - r2) + abs(c1 - c2)
     assert_equal(manhattan_distance, 1)
 
@@ -119,17 +123,17 @@ def test_ship():
 
 test_ship()
 
-
-
-
 def all_ships():
     all=set()
     num=random.randint(3,5)
     while len(all) < num*2:
         ship=get_ship()
-        if all.isdisjoint(ship):
-            all.update(ship)
+        if all.isdisjoint(ship): #checks if two sets have nothing in common
+            all.update(ship) #Like append
     return all
+
+def valid_all_ships(ships: set):
+    
      
 
 #main()

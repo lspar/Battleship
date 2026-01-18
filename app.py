@@ -4,6 +4,8 @@ from game import shoot
 from game import all_ships
 from bakery import assert_equal
 import copy
+import pytest
+from unittest.mock import MagicMock, patch
 
 st.title("Battleship!")
 
@@ -70,10 +72,13 @@ def play_game():
                         st.info(st.session_state.message)
                         win_game()
 
+
+
 def win_game ():
         if st.session_state.hits == st.session_state.ships:
                 st.success("You Win!")
                 hide_button()
+
 
 
 play_game()

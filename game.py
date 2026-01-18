@@ -132,9 +132,31 @@ def all_ships():
             all.update(ship) #Like append
     return all
 
+def has_duplicates(seq):
+    """
+    Checks if a sequence (list, tuple, etc.) contains any duplicate elements.
+    Returns True if duplicates exist, False otherwise.
+    """
+    return len(seq) != len(set(seq))
+
+
 def valid_all_ships(ships: set):
-    
-     
+    # len of all is always greater equal to 6
+    # Less equal ten 
+    # nothing in common
+    r=len(ships)
+    assert_equal (6 <= r <= 10, True)
+    assert_equal(has_duplicates(ships), False)
+
+def test_all_ships():
+    for i in range(100):
+        ships = all_ships()
+        valid_all_ships(ships)
+
+test_all_ships()
+
+
+
 
 #main()
 #print(get_ships())

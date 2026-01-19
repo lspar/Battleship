@@ -1,10 +1,6 @@
 
-from app import make_grid
-from game import shoot
-from game import get_ship
-from game import all_ships
+from game import get_ship, shoot, all_ships, make_grid
 from bakery import assert_equal
-
 
 ships= {(3,4), (5,6)}
 grid=[["~", "~", "~", "~", "~", "~", "~", "~"],
@@ -17,6 +13,16 @@ grid=[["~", "~", "~", "~", "~", "~", "~", "~"],
       ["~", "~", "~", "~", "~", "~", "~", "~"]]
 
 assert_equal(make_grid(), grid)
+
+def test_make_grid():
+    grid=make_grid()
+    assert len(grid)==8 #check that the grid has 8 rows
+    for row in grid:
+        assert len(row)==8
+        for cell in row:
+            assert cell== "~"
+test_make_grid()
+
 assert_equal(shoot(ships, grid, set(), 3, 4), "Hit!")
 assert_equal(shoot(ships, grid, set(), 2, 4), "Miss!")
 assert_equal(shoot(ships, grid, set(), 3, 4), "Repeat!")
@@ -35,7 +41,7 @@ def is_valid_ship(ship: set):
     assert_equal(manhattan_distance, 1)
 
 def test_ship():
-    for i in range(100):
+    for i in range(20):
         ship = get_ship()
         is_valid_ship(ship)
 

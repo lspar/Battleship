@@ -1,21 +1,14 @@
 import streamlit as st
 import pandas as pd 
-from game import shoot
-from game import all_ships
+from game import shoot, all_ships, make_grid
 import copy
 import pytest
 from unittest.mock import MagicMock, patch
 
 st.title("Battleship!")
 
-def make_grid():
-        grid= []
-        squiggles=["~", "~", "~", "~", "~", "~", "~", "~"]
-        for squiggle in range(8):
-                grid.append(copy.deepcopy(squiggles))
-#for row in grid:
-        #st.write(" ".join(row))
-        return grid
+make_grid()
+
 if "grid" not in st.session_state:
         st.session_state.grid = make_grid()
 

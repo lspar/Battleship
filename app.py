@@ -2,8 +2,6 @@ import streamlit as st
 import pandas as pd 
 from game import shoot, all_ships, make_grid
 import copy
-import pytest
-from unittest.mock import MagicMock, patch
 
 st.title("Battleship!")
 

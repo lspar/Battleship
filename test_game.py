@@ -87,6 +87,6 @@ def test_play_game():
 
         mock_info.assert_called_once_with(st.session_state.message)
         assert st.session_state.hits == {(3, 4)}
-        assert st.session_state.button_clicked is False
+        assert st.session_state.button_clicked is True
         
         

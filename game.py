@@ -44,7 +44,7 @@ def main():
 '''
 def make_grid():
     grid= []
-    squiggles=["~", "~", "~", "~", "~", "~", "~", "~"]
+    squiggles=["🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊"]
     for squiggle in range(8):
         grid.append(copy.deepcopy(squiggles))
     return grid 

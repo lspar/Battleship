@@ -1,6 +1,6 @@
 
 from game import get_ship, shoot, all_ships, make_grid
-from app import play_game
+from app import play_game, win_game, reset_game
 import pytest
 from unittest.mock import patch
 import streamlit as st
@@ -66,6 +66,33 @@ def test_all_ships():
         ships = all_ships()
         valid_all_ships(ships)
 
+
+
+def test_reset_game():
+    st.session_state.clear()
+    st.session_state.grid= make_grid()
+    st.session_state.ships = {(4,3), (6,7)}
+    st.session_state.hits = {(4,3), (6,7)}
+    st.session_state.message = "You Win!"
+    st.session_state.button_clicked=True
+
+    reset_game()
+
+    assert len(st.session_state.grid)==8
+    for row in st.session_state.grid:
+        assert len(row)==8
+        for cell in row:
+            assert cell== "~"
+    
+    assert isinstance(st.session_state.hits, set)
+    assert 6<= len(st.session_state.ships) <= 10 #multiply numbers by 2
+    assert st.session_state.hits==set()
+    assert st.session_state.button_clicked is False
+    assert st.session_state.message==""
+
+
+#Streamlit Mocks
+
 def test_play_game():
     st.session_state.clear()
     st.session_state.grid = make_grid()
@@ -74,8 +101,8 @@ def test_play_game():
     st.session_state.message = ""
     st.session_state.button_clicked = False
 
-    with patch("streamlit.button", return_value=True), \
-        patch("streamlit.info") as mock_info:
+    with patch("app.st.button", return_value=True), \
+        patch("app.st.info") as mock_info:
         
         print("BEFORE FIRING:")
         print("hits: ", st.session_state.hits)
@@ -89,4 +116,17 @@ def test_play_game():
         assert st.session_state.hits == {(3, 4)}
         assert st.session_state.button_clicked is True
         
-        
+def test_win_game():
+    st.session_state.clear()
+    st.session_state.grid = make_grid()
+    st.session_state.ships = {(3,4)}
+    st.session_state.hits = {(3,4)}
+    st.session_state.message = ""
+    st.session_state.button_clicked = False
+
+    with patch ("app.st.success") as mock_success:
+        win_game()
+        mock_success.assert_called_once_with("You Win!")
+        assert st.session_state.button_clicked is True
+
+

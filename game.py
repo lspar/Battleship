@@ -7,13 +7,13 @@ import random
 def shoot(ships: set, grid: list, hits:set, row: int, col:int):
     #This function takes in a grid for battelship, ships placement, and returns a hit or miss depending
     #on the placement of the ships compared to the grid.
-    if grid[row][col] !="X" and grid[row][col]!="0":
+    if grid[row][col] !="🚢" and grid[row][col]!="⬛":
         if (row, col) in ships:
-            grid[row][col] = "X"
+            grid[row][col] = "🚢"
             hits.add((row,col))
             return "Hit!"
         else:
-            grid[row][col] = "0"
+            grid[row][col] = "⬛"
             return "Miss!"
     return "Repeat!"
 

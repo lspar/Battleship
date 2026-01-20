@@ -11,9 +11,9 @@ def test_make_grid():
     for row in grid:
         assert len(row)==8
         for cell in row:
-            assert cell== "~"
-    grid[0][0] = "X"
-    assert grid[1][0]== "~"
+            assert cell== "🌊"
+    grid[0][0] = "🚢"
+    assert grid[1][0]== "🌊"
 
 def test_shoot():
     ships= {(3,4), (5,6)}
@@ -82,7 +82,7 @@ def test_reset_game():
     for row in st.session_state.grid:
         assert len(row)==8
         for cell in row:
-            assert cell== "~"
+            assert cell== "🌊"
     
     assert isinstance(st.session_state.hits, set)
     assert 6<= len(st.session_state.ships) <= 10 #multiply numbers by 2

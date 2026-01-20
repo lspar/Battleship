@@ -82,16 +82,22 @@ def get_ship():
         vertical_set.add((chosen_row, chosen_col))
         vertical_set.add((chosen_row+1, chosen_col))
         return vertical_set
-    
 
 
 def all_ships():
-    all=set()
+    all_coords=set()
+    ship_list =[]
     num=random.randint(3,5)
-    while len(all) < num*2:
+    while len(ship_list) < num:
         ship=get_ship()
-        if all.isdisjoint(ship): #checks if two sets have nothing in common
-            all.update(ship) #Like append
-    return all
+        if all_coords.isdisjoint(ship): #checks if two sets have nothing in common
+            all_coords.update(ship) #Like append
+            ship_list.append(ship)
+    return all_coords, ship_list
 
-print(all_ships())
+def ship_tracker():
+    ships = all_ships()
+    ships_remaining = len(ships)//2
+    for ship in ships:
+        if :
+            ships_remaining -= 1

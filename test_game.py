@@ -1,5 +1,5 @@
 
-from game import get_ship, shoot, all_ships, make_grid
+from game import get_ship, shoot, all_ships, make_grid, ship_tracker
 from app import play_game, win_game, reset_game
 import pytest
 from unittest.mock import patch
@@ -16,13 +16,13 @@ def test_make_grid():
     assert grid[1][0]== "🌊"
 
 def test_shoot():
-    ships= {(3,4), (5,6)}
+    coords= {(3,4), (5,6)}
     grid = make_grid()
     hits = set()
-    assert shoot(ships, grid, hits, 3,4) == "Hit!"
-    assert shoot(ships, grid, hits, 5,6) == "Hit!"
-    assert shoot(ships, grid, hits, 2, 4) == "Miss!"
-    assert shoot(ships, grid, hits, 3, 4) =="Repeat!"
+    assert shoot(coords, grid, hits, 3,4) == "Hit!"
+    assert shoot(coords, grid, hits, 5,6) == "Hit!"
+    assert shoot(coords, grid, hits, 2, 4) == "Miss!"
+    assert shoot(coords, grid, hits, 3, 4) =="Repeat!"
 
 
 def is_valid_ship(ship: set):
@@ -53,25 +53,24 @@ def has_duplicates(seq):
     return len(seq) != len(set(seq))
 
 
-def valid_all_ships(ships: set):
+def valid_all_ships(ships: list, coords:set):
     # len of all is always greater equal to 6
     # Less equal ten 
     # nothing in common
-    r=len(ships)
-    assert 6 <= r <= 10
-    assert has_duplicates(ships) ==False
+    num_ships=len(ships)
+    assert 3 <= num_ships <= 5
+    assert has_duplicates(coords) ==False
 
 def test_all_ships():
     for i in range(100):
-        ships = all_ships()
-        valid_all_ships(ships)
-
+        coords, ships = all_ships()
+        valid_all_ships(ships, coords)
 
 
 def test_reset_game():
     st.session_state.clear()
     st.session_state.grid= make_grid()
-    st.session_state.ships = {(4,3), (6,7)}
+    st.session_state.ships = [{(4,3), (6,7)}]
     st.session_state.hits = {(4,3), (6,7)}
     st.session_state.message = "You Win!"
     st.session_state.button_clicked=True
@@ -85,7 +84,7 @@ def test_reset_game():
             assert cell== "🌊"
     
     assert isinstance(st.session_state.hits, set)
-    assert 6<= len(st.session_state.ships) <= 10 #multiply numbers by 2
+    assert 3<= len(st.session_state.ships) <= 5
     assert st.session_state.hits==set()
     assert st.session_state.button_clicked is False
     assert st.session_state.message==""
@@ -96,7 +95,7 @@ def test_reset_game():
 def test_play_game():
     st.session_state.clear()
     st.session_state.grid = make_grid()
-    st.session_state.ships = {(3,4)}
+    st.session_state.allcoords, st.session_state.ships = {(3,4),(3,3)}, [{(3,4),(3,3)}]
     st.session_state.hits = set()
     st.session_state.message = ""
     st.session_state.button_clicked = False
@@ -111,16 +110,19 @@ def test_play_game():
         print("AFTER FIRING:")
         print("hits:", st.session_state.hits)
         print("ships:", st.session_state.ships)
-
+    
         mock_info.assert_called_once_with(st.session_state.message)
-        assert st.session_state.hits == {(3, 4)}
+        mock_info.reset_mock() # Give it another button click to simulate firing multiple times
+        play_game(3,3)
+        mock_info.assert_called_once_with(st.session_state.message)
+        assert st.session_state.hits == {(3, 4), (3, 3)}
         assert st.session_state.button_clicked is True
         
 def test_win_game():
     st.session_state.clear()
     st.session_state.grid = make_grid()
-    st.session_state.ships = {(3,4)}
-    st.session_state.hits = {(3,4)}
+    st.session_state.allcoords, st.session_state.ships = {(3,4), (3,3)}, [{(3,4), (3,3)}]
+    st.session_state.hits = {(3,4), (3,3)}
     st.session_state.message = ""
     st.session_state.button_clicked = False
 
@@ -129,4 +131,10 @@ def test_win_game():
         mock_success.assert_called_once_with("You Win!")
         assert st.session_state.button_clicked is True
 
+def test_ship_tracker():
+    ships=[{(3,3), (3,4)}, {(2,2), (2,1)}]
+    
 
+#num_ships decreases by 1 everytime that shoot() return Hit!
+# if shoot ==Hit assert num_ships -1 == True
+#decreases num by 1 only when it is a hit

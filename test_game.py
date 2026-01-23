@@ -133,6 +133,9 @@ def test_win_game():
 
 def test_ship_tracker():
     ships=[{(3,3), (3,4)}, {(2,2), (2,1)}]
+    assert ship_tracker(ships, {(3,3), (3,4), (2,2), (2,1)}) == 0
+    assert ship_tracker(ships, {(3,3), (3,4)}) == 1
+    assert ship_tracker(ships, set()) == 2
     
 
 #num_ships decreases by 1 everytime that shoot() return Hit!

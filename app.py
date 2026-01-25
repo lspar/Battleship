@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd 
-from game import shoot, all_ships, make_grid
+from game import shoot, all_ships, make_grid, ship_tracker
 import copy
 
 st.title("Battleship!")
@@ -22,6 +22,9 @@ if "message" not in st.session_state:
 if "button_clicked" not in st.session_state:
         st.session_state.button_clicked=False
 
+if "ships_remaining" not in st.session_state:
+        st.session_state.ships_remaining= ship_tracker(st.session_state.ships, st.session_state.hits)
+
 def reset_game():
         st.session_state.grid=make_grid()
         st.session_state.allcoords, st.session_state.ships = all_ships()
@@ -35,15 +38,19 @@ if st.button("New Game"):
 row = st.selectbox("Row",(0,1,2,3,4,5,6,7))
 col = st.selectbox("Column", (0,1,2,3,4,5,6,7))
 
+col1, col2 = st.columns(2, gap="small")
 
 def play_game(selected_row, selected_col):
-        if not st.session_state.button_clicked:
-                if st.button("Fire!"):
-                        st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
-                                                         st.session_state.hits, selected_row, selected_col)
-                        st.info(st.session_state.message)
-                        win_game()
+        with col1:
+                if not st.session_state.button_clicked:
+                                if st.button("Fire!"):
+                                        st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
+                                                                        st.session_state.hits, selected_row, selected_col)
+                                        st.info(st.session_state.message)
+                                        win_game()
 
+with col2:
+        st.info(st.session_state.ships_remaining)
 
 
 def win_game ():

@@ -104,5 +104,3 @@ def ship_tracker(ships:list, hits:set):
             count+=1
     ships_remaining-=count
     return ships_remaining
-
-

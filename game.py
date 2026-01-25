@@ -105,3 +105,7 @@ def ship_tracker(ships:list, hits:set):
     ships_remaining-=count
     return ships_remaining
 
+def shot_limit(ships: list, hits: set):
+    if len(ships) == 3:
+        if hits == 16:
+            return "Sorry, you lost!"

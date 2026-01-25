@@ -31,6 +31,8 @@ def reset_game():
         st.session_state.hits = set()
         st.session_state.message = ""
         st.session_state.button_clicked=False
+        st.session_state.ships_remaining= ship_tracker(st.session_state.ships, st.session_state.hits)
+
 if st.button("New Game"):
         reset_game()
 
@@ -42,15 +44,17 @@ col1, col2 = st.columns(2, gap="small")
 
 def play_game(selected_row, selected_col):
         with col1:
+                st.session_state.ships_remaining = ship_tracker(st.session_state.ships, st.session_state.hits)
                 if not st.session_state.button_clicked:
-                                if st.button("Fire!"):
-                                        st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
+                        if st.button("Fire!"):
+                                st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
                                                                         st.session_state.hits, selected_row, selected_col)
-                                        st.info(st.session_state.message)
-                                        win_game()
+                                st.info(st.session_state.message)
+                                win_game()
 
 with col2:
-        st.info(st.session_state.ships_remaining)
+        st.write("Ships Remaining: ")
+        st.info(str(st.session_state.ships_remaining))
 
 
 def win_game ():

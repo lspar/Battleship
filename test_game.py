@@ -1,6 +1,6 @@
 
 from game import get_ship, shoot, all_ships, make_grid, ship_tracker
-from app import play_game, win_game, reset_game
+from app import play_game, reset_game
 import pytest
 from unittest.mock import patch
 import streamlit as st
@@ -116,19 +116,6 @@ def test_play_game():
         play_game(3,3)
         mock_info.assert_called_once_with(st.session_state.message)
         assert st.session_state.hits == {(3, 4), (3, 3)}
-        assert st.session_state.button_clicked is True
-        
-def test_win_game():
-    st.session_state.clear()
-    st.session_state.grid = make_grid()
-    st.session_state.allcoords, st.session_state.ships = {(3,4), (3,3)}, [{(3,4), (3,3)}]
-    st.session_state.hits = {(3,4), (3,3)}
-    st.session_state.message = ""
-    st.session_state.button_clicked = False
-
-    with patch ("app.st.success") as mock_success:
-        win_game()
-        mock_success.assert_called_once_with("You Win!")
         assert st.session_state.button_clicked is True
 
 def test_ship_tracker():

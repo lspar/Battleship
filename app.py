@@ -25,6 +25,9 @@ if "ships_remaining" not in st.session_state:
 if "total_shots" not in st.session_state:
         st.session_state.total_shots = 0
 
+if "shots_remaining" not in st.session_state:
+        st.session_state.shots_remaining = shot_countdown(st.session_state.ships, st.session_state.total_shots)
+
 def reset_game():
         st.session_state.grid=make_grid()
         st.session_state.allcoords, st.session_state.ships = all_ships()
@@ -32,6 +35,7 @@ def reset_game():
         st.session_state.message = ""
         st.session_state.ships_remaining= ship_tracker(st.session_state.ships, st.session_state.hits)
         st.session_state.total_shots = 0
+        st.session_state.shots_remaining = shot_countdown(st.session_state.ships, st.session_state.total_shots)
 
 if st.button("New Game"):
         reset_game()
@@ -47,12 +51,18 @@ def play_game(selected_row, selected_col):
                 fire_disabled = st.session_state.hits == st.session_state.allcoords
                 if st.button("Fire!", disabled=fire_disabled):
                         st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
-                                                        st.session_state.hits, st.session_state.total_shots, selected_row, selected_col)
+                                                        st.session_state.hits, selected_row, selected_col)
+                        if st.session_state.message != "Repeat!":
+                                st.session_state.total_shots +=1
                         st.session_state.ships_remaining = ship_tracker(st.session_state.ships, st.session_state.hits)
+                        st.session_state.shots_remaining = shot_countdown(st.session_state.ships, st.session_state.total_shots)
                         st.info(st.session_state.message)
-                        fire_disabled = st.session_state.hits == st.session_state.allcoords
+                        fire_disabled = st.session_state.hits == st.session_state.allcoords or st.session_state.shots_remaining == "Sorry, You Lost!"
                 if fire_disabled:
-                        st.success("You Win!")
+                        if st.session_state.hits == st.session_state.allcoords:
+                                st.success("You Win!")
+                        if st.session_state.shots_remaining == "Sorry, You Lost!":
+                                st.error("Sorry, You Lost!")
 
 play_game(row,col)
 
@@ -60,7 +70,7 @@ with col2:
         st.write("Ships Remaining: ")
         st.info(str(st.session_state.ships_remaining))
         st.write("Shots Remaining: ")
-        st.warning(str(shot_countdown(st.session_state.ships, st.session_state.total_shots)))
+        st.warning(str(st.session_state.shots_remaining))
 
 
 df = pd.DataFrame(st.session_state.grid) #creates a table with the grid we made

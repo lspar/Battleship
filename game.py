@@ -4,16 +4,19 @@
 import copy
 import random
 
-def shoot(coords: set, grid: list, hits:set, row: int, col:int):
+def shoot(coords: set, grid: list, hits:set, total_shots: int, row: int, col:int):
     #This function takes in a grid for battelship, ships placement, and returns a hit or miss depending
     #on the placement of the ships compared to the grid.
+    total_shots = 0
     if grid[row][col] !="🚢" and grid[row][col]!="⬛":
         if (row, col) in coords:
             grid[row][col] = "🚢"
             hits.add((row,col))
+            total_shots += 1
             return "Hit!"
         else:
             grid[row][col] = "⬛"
+            total_shots += 1
             return "Miss!"
     return "Repeat!"
 
@@ -105,7 +108,17 @@ def ship_tracker(ships:list, hits:set):
     ships_remaining-=count
     return ships_remaining
 
-def shot_limit(ships: list, hits: set):
+def shot_limit(ships: list):
     if len(ships) == 3:
-        if hits == 16:
-            return "Sorry, you lost!"
+        return 16
+    if len(ships) == 4:
+        return 20
+    if len(ships) == 5:
+        return 25
+    
+def shot_countdown(ships: list, total_shots: int):
+    max_shots = shot_limit(ships)
+    for shot in range(total_shots+1):
+        max_shots -= 1
+        if max_shots == 0:
+            return "Sorry, You Lost!"

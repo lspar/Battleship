@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd 
-from game import shoot, all_ships, make_grid, ship_tracker
+from game import shoot, all_ships, make_grid, ship_tracker, shot_limit
 import copy
 
 st.title("Battleship!")
@@ -19,18 +19,17 @@ if "hits" not in st.session_state:
 if "message" not in st.session_state:
         st.session_state.message = ""
 
-if "button_clicked" not in st.session_state:
-        st.session_state.button_clicked=False
-
 if "ships_remaining" not in st.session_state:
         st.session_state.ships_remaining= ship_tracker(st.session_state.ships, st.session_state.hits)
+
+if "shot_limit" not in st.session_state:
+        st.session_state.shot_limit = shot_limit(st.session_state.ships)
 
 def reset_game():
         st.session_state.grid=make_grid()
         st.session_state.allcoords, st.session_state.ships = all_ships()
         st.session_state.hits = set()
         st.session_state.message = ""
-        st.session_state.button_clicked=False
         st.session_state.ships_remaining= ship_tracker(st.session_state.ships, st.session_state.hits)
 
 if st.button("New Game"):
@@ -47,14 +46,12 @@ def play_game(selected_row, selected_col):
                 fire_disabled = st.session_state.hits == st.session_state.allcoords
                 if st.button("Fire!", disabled=fire_disabled):
                         st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
-                                                        st.session_state.hits, selected_row, selected_col)
+                                                        st.session_state.hits, st.session_state.shot_limit, selected_row, selected_col)
                         st.session_state.ships_remaining = ship_tracker(st.session_state.ships, st.session_state.hits)
                         st.info(st.session_state.message)
                         fire_disabled = st.session_state.hits == st.session_state.allcoords
                 if fire_disabled:
                         st.success("You Win!")
-                        
-
 
 play_game(row,col)
 

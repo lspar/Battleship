@@ -1,5 +1,5 @@
 
-from game import get_ship, shoot, all_ships, make_grid, ship_tracker
+from game import get_ship, shoot, all_ships, make_grid, ship_tracker, shot_limit
 from app import play_game, reset_game
 import pytest
 from unittest.mock import patch
@@ -19,10 +19,11 @@ def test_shoot():
     coords= {(3,4), (5,6)}
     grid = make_grid()
     hits = set()
-    assert shoot(coords, grid, hits, 3,4) == "Hit!"
-    assert shoot(coords, grid, hits, 5,6) == "Hit!"
-    assert shoot(coords, grid, hits, 2, 4) == "Miss!"
-    assert shoot(coords, grid, hits, 3, 4) =="Repeat!"
+    shots = 16
+    assert shoot(coords, grid, hits, shots, 3,4) == "Hit!"
+    assert shoot(coords, grid, hits, shots, 5,6) == "Hit!"
+    assert shoot(coords, grid, hits, shots, 2, 4) == "Miss!"
+    assert shoot(coords, grid, hits, shots, 3, 4) =="Repeat!"
 
 
 def is_valid_ship(ship: set):
@@ -73,7 +74,7 @@ def test_reset_game():
     st.session_state.ships = [{(4,3), (6,7)}]
     st.session_state.hits = {(4,3), (6,7)}
     st.session_state.message = "You Win!"
-    st.session_state.button_clicked=True
+    st.session_state.shots_limit= shot_limit(st.session_state.ships)
 
     reset_game()
 
@@ -86,7 +87,6 @@ def test_reset_game():
     assert isinstance(st.session_state.hits, set)
     assert 3<= len(st.session_state.ships) <= 5
     assert st.session_state.hits==set()
-    assert st.session_state.button_clicked is False
     assert st.session_state.message==""
 
 
@@ -98,7 +98,7 @@ def test_play_game():
     st.session_state.allcoords, st.session_state.ships = {(3,4),(3,3)}, [{(3,4),(3,3)}]
     st.session_state.hits = set()
     st.session_state.message = ""
-    st.session_state.button_clicked = False
+    st.session_state.shot_limit= shot_limit(st.session_state.ships)
 
     with patch("app.st.button", return_value=True), \
         patch("app.st.info") as mock_info, \

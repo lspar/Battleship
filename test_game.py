@@ -74,7 +74,7 @@ def test_reset_game():
     st.session_state.ships = [{(4,3), (6,7)}]
     st.session_state.hits = {(4,3), (6,7)}
     st.session_state.message = "You Win!"
-    st.session_state.shots_limit= shot_limit(st.session_state.ships)
+    st.session_state.total_shots= 0
 
     reset_game()
 
@@ -88,6 +88,8 @@ def test_reset_game():
     assert 3<= len(st.session_state.ships) <= 5
     assert st.session_state.hits==set()
     assert st.session_state.message==""
+    assert st.session_state.total_shots == 0
+    
 
 
 #Streamlit Mocks
@@ -98,7 +100,7 @@ def test_play_game():
     st.session_state.allcoords, st.session_state.ships = {(3,4),(3,3)}, [{(3,4),(3,3)}]
     st.session_state.hits = set()
     st.session_state.message = ""
-    st.session_state.shot_limit= shot_limit(st.session_state.ships)
+    st.session_state.total_shots= 0
 
     with patch("app.st.button", return_value=True), \
         patch("app.st.info") as mock_info, \
@@ -146,6 +148,8 @@ def test_shot_countdown():
     assert shot_countdown(ships3, 16) == "Sorry, You Lost!"
     assert shot_countdown(ships4, 20) == "Sorry, You Lost!"
     assert shot_countdown(ships5, 25) == "Sorry, You Lost!"
+    assert shot_countdown(ships3, 2) == 14
+
     
 
 #num_ships decreases by 1 everytime that shoot() return Hit!

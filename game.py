@@ -118,7 +118,6 @@ def shot_limit(ships: list):
     
 def shot_countdown(ships: list, total_shots: int):
     max_shots = shot_limit(ships)
-    for shot in range(total_shots+1):
-        max_shots -=1
-        if max_shots == 0:
-            return "Sorry, You Lost!"
+    if total_shots >= max_shots:
+        return "Sorry, You Lost!"
+    return max_shots - total_shots

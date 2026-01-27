@@ -101,7 +101,8 @@ def test_play_game():
     st.session_state.button_clicked = False
 
     with patch("app.st.button", return_value=True), \
-        patch("app.st.info") as mock_info:
+        patch("app.st.info") as mock_info, \
+        patch ("app.st.success") as mock_success:
         
         print("BEFORE FIRING:")
         print("hits: ", st.session_state.hits)
@@ -116,7 +117,13 @@ def test_play_game():
         play_game(3,3)
         mock_info.assert_called_once_with(st.session_state.message)
         assert st.session_state.hits == {(3, 4), (3, 3)}
-        assert st.session_state.button_clicked is True
+        assert st.session_state.hits == st.session_state.allcoords
+        mock_success.assert_called_once_with("You Win!")
+        
+
+
+            
+        #assert st.session_state.button_clicked is True
 
 def test_ship_tracker():
     ships=[{(3,3), (3,4)}, {(2,2), (2,1)}]

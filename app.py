@@ -45,13 +45,12 @@ col1, col2 = st.columns(2, gap="small")
 def play_game(selected_row, selected_col):
         with col1: 
                 fire_disabled = st.session_state.hits == st.session_state.allcoords
-
                 if st.button("Fire!", disabled=fire_disabled):
                         st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
                                                         st.session_state.hits, selected_row, selected_col)
                         st.session_state.ships_remaining = ship_tracker(st.session_state.ships, st.session_state.hits)
                         st.info(st.session_state.message)
-                        
+                        fire_disabled = st.session_state.hits == st.session_state.allcoords
                 if fire_disabled:
                         st.success("You Win!")
                         

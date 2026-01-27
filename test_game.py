@@ -1,5 +1,5 @@
 
-from game import get_ship, shoot, all_ships, make_grid, ship_tracker, shot_limit
+from game import get_ship, shoot, all_ships, make_grid, ship_tracker, shot_limit, shot_countdown
 from app import play_game, reset_game
 import pytest
 from unittest.mock import patch
@@ -130,6 +130,22 @@ def test_ship_tracker():
     assert ship_tracker(ships, {(3,3), (3,4), (2,2), (2,1)}) == 0
     assert ship_tracker(ships, {(3,3), (3,4)}) == 1
     assert ship_tracker(ships, set()) == 2
+
+def test_shot_limit():
+    ships3 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}]
+    ships4 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}]
+    ships5 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}, {(5,5), (5,4)}]
+    assert shot_limit(ships3) ==16
+    assert shot_limit(ships4) ==20
+    assert shot_limit(ships5) ==25
+
+def test_shot_countdown():
+    ships3 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}]
+    ships4 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}]
+    ships5 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}, {(5,5), (5,4)}]
+    assert shot_countdown(ships3, 16) == "Sorry, You Lost!"
+    assert shot_countdown(ships4, 20) == "Sorry, You Lost!"
+    assert shot_countdown(ships5, 25) == "Sorry, You Lost!"
     
 
 #num_ships decreases by 1 everytime that shoot() return Hit!

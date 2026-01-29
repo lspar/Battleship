@@ -23,7 +23,17 @@ def set_png_as_page_bg(png_file):
 # Call the function with your image file name
 set_png_as_page_bg('Battleship Image.jpg') 
 
-
+st.markdown("""
+<style>
+h1 {
+    background-color: #FFFFFF; /* Your desired background color */
+    color: white; /* Optional: change text color for better contrast */
+    padding: 10px; /* Optional: add some padding around the text */
+    border-radius: 5px; /* Optional round the corners */
+    opacity: 0.8;
+}
+</style>
+""", unsafe_allow_html=True)
 
 st.title("Battleship!")
 st.write("Each ship has a legnth of 2 and there could be 3-5 ships. Good Luck!")

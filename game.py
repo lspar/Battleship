@@ -17,31 +17,7 @@ def shoot(coords: set, grid: list, hits:set, row: int, col:int):
             return "Miss!"
     return "Repeat!"
 
-'''
-def main():
-    #This is the main function of the game that keeps track of the grid and executes actions of the player. 
-    grid = []
-    ships = {(1,2), (1,3)}
-    hits=set()
-    squiggles=["~", "~", "~", "~", "~", "~", "~", "~"]
-    shots=[(3,2), (1,2), (1,3), (1,2)]
-    for squiggle in range(8):
-        grid.append(copy.deepcopy(squiggles))
-    #grid[1][2]="X"
-    #shoot(ships, grid, hits, 1,3)
-    #shoot(ships, grid, hits, 1,2)
-    #print(grid)
-    #if hits==ships:
-        #print ("Game over, you win")
-    
-    for i, j in shots:
-        shoot(ships, grid, hits, i, j)
-        if hits==ships:
-            print ("You win")
-            break
-    print(grid)
-    print(hits)
-'''
+
 def make_grid():
     grid= []
     squiggles=["🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊", "🌊"]

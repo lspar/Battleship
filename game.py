@@ -107,14 +107,15 @@ def ship_tracker(ships:list, hits:set):
 
 def shot_limit(ships: list):
     if len(ships) == 3:
-        return 16
-    if len(ships) == 4:
         return 20
+    if len(ships) == 4:
+        return 30
     if len(ships) == 5:
-        return 25
+        return 40
+    return 0
     
 def shot_countdown(ships: list, total_shots: int):
     max_shots = shot_limit(ships)
     if total_shots >= max_shots:
-        return "Sorry, You Lost!"
+        return 0
     return max_shots - total_shots

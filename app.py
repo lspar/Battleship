@@ -4,6 +4,7 @@ from game import shoot, all_ships, make_grid, ship_tracker, shot_limit, shot_cou
 import copy
 
 st.title("Battleship!")
+st.write("Each ship has a legnth of 2 and there could be 3-5 ships. Good Luck!")
 
 make_grid()
 
@@ -48,7 +49,7 @@ col1, col2 = st.columns(2, gap="small")
 
 def play_game(selected_row, selected_col):
         with col1: 
-                fire_disabled = st.session_state.hits == st.session_state.allcoords
+                fire_disabled = st.session_state.hits == st.session_state.allcoords or st.session_state.shots_remaining == 0
                 if st.button("Fire!", disabled=fire_disabled):
                         st.session_state.message = shoot(st.session_state.allcoords, st.session_state.grid, 
                                                         st.session_state.hits, selected_row, selected_col)
@@ -57,11 +58,11 @@ def play_game(selected_row, selected_col):
                         st.session_state.ships_remaining = ship_tracker(st.session_state.ships, st.session_state.hits)
                         st.session_state.shots_remaining = shot_countdown(st.session_state.ships, st.session_state.total_shots)
                         st.info(st.session_state.message)
-                        fire_disabled = st.session_state.hits == st.session_state.allcoords or st.session_state.shots_remaining == "Sorry, You Lost!"
+                        fire_disabled = st.session_state.hits == st.session_state.allcoords or st.session_state.shots_remaining == 0
                 if fire_disabled:
                         if st.session_state.hits == st.session_state.allcoords:
                                 st.success("You Win!")
-                        if st.session_state.shots_remaining == "Sorry, You Lost!":
+                        if st.session_state.shots_remaining ==  0:
                                 st.error("Sorry, You Lost!")
 
 play_game(row,col)

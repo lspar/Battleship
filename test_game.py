@@ -1,7 +1,7 @@
 
 from game import get_ship, shoot, all_ships, make_grid, ship_tracker, shot_limit, shot_countdown
-from app import play_game, reset_game
 import pytest
+from app import play_game, reset_game
 from unittest.mock import patch
 import streamlit as st
 
@@ -19,11 +19,10 @@ def test_shoot():
     coords= {(3,4), (5,6)}
     grid = make_grid()
     hits = set()
-    shots = 16
-    assert shoot(coords, grid, hits, shots, 3,4) == "Hit!"
-    assert shoot(coords, grid, hits, shots, 5,6) == "Hit!"
-    assert shoot(coords, grid, hits, shots, 2, 4) == "Miss!"
-    assert shoot(coords, grid, hits, shots, 3, 4) =="Repeat!"
+    assert shoot(coords, grid, hits, 3,4) == "Hit!"
+    assert shoot(coords, grid, hits, 5,6) == "Hit!"
+    assert shoot(coords, grid, hits, 2, 4) == "Miss!"
+    assert shoot(coords, grid, hits, 3, 4) =="Repeat!"
 
 
 def is_valid_ship(ship: set):
@@ -100,20 +99,15 @@ def test_play_game():
     st.session_state.allcoords, st.session_state.ships = {(3,4),(3,3)}, [{(3,4),(3,3)}]
     st.session_state.hits = set()
     st.session_state.message = ""
+    st.session_state.ships_remaining = 1
     st.session_state.total_shots= 0
+    st.session_state.shots_remaining = shot_countdown(st.session_state.ships, st.session_state.total_shots)
 
     with patch("app.st.button", return_value=True), \
         patch("app.st.info") as mock_info, \
         patch ("app.st.success") as mock_success:
-        
-        print("BEFORE FIRING:")
-        print("hits: ", st.session_state.hits)
-        print("ships:", st.session_state.ships)
+           
         play_game(3, 4)
-        print("AFTER FIRING:")
-        print("hits:", st.session_state.hits)
-        print("ships:", st.session_state.ships)
-    
         mock_info.assert_called_once_with(st.session_state.message)
         mock_info.reset_mock() # Give it another button click to simulate firing multiple times
         play_game(3,3)
@@ -121,12 +115,21 @@ def test_play_game():
         assert st.session_state.hits == {(3, 4), (3, 3)}
         assert st.session_state.hits == st.session_state.allcoords
         mock_success.assert_called_once_with("You Win!")
+
+
+    st.session_state.hits = set()
+    st.session_state.total_shots= 19
+    st.session_state.shots_remaining = shot_countdown(st.session_state.ships, st.session_state.total_shots)
+
+    with patch("app.st.button", return_value=True), \
+        patch("app.st.info") as mock_info, \
+        patch ("app.st.error") as mock_error:
+
+        play_game(1,2)
+        mock_info.assert_called_once_with(st.session_state.message)
+        assert st.session_state.hits != st.session_state.allcoords
+        mock_error.assert_called_once_with("Sorry, You Lost!")
         
-
-
-            
-        #assert st.session_state.button_clicked is True
-
 def test_ship_tracker():
     ships=[{(3,3), (3,4)}, {(2,2), (2,1)}]
     assert ship_tracker(ships, {(3,3), (3,4), (2,2), (2,1)}) == 0
@@ -137,18 +140,18 @@ def test_shot_limit():
     ships3 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}]
     ships4 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}]
     ships5 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}, {(5,5), (5,4)}]
-    assert shot_limit(ships3) ==16
-    assert shot_limit(ships4) ==20
-    assert shot_limit(ships5) ==25
+    assert shot_limit(ships3) ==20
+    assert shot_limit(ships4) ==30
+    assert shot_limit(ships5) ==40
 
 def test_shot_countdown():
     ships3 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}]
     ships4 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}]
     ships5 = [{(3,3), (3,4)}, {(2,2), (2,1)}, {(1,2), (1,1)}, {(0,0), (0,1)}, {(5,5), (5,4)}]
-    assert shot_countdown(ships3, 16) == "Sorry, You Lost!"
-    assert shot_countdown(ships4, 20) == "Sorry, You Lost!"
-    assert shot_countdown(ships5, 25) == "Sorry, You Lost!"
-    assert shot_countdown(ships3, 2) == 14
+    assert shot_countdown(ships3, 20) == 0
+    assert shot_countdown(ships4, 30) == 0
+    assert shot_countdown(ships5, 40) == 0
+    assert shot_countdown(ships3, 2) == 18
 
     
 

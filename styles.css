@@ -1,8 +1,12 @@
+import base64
+import streamlit as st
+
 def get_base64_of_bin_file(bin_file):
     with open(bin_file, 'rb') as f:
         data = f.read()
     return base64.b64encode(data).decode()
 
+# Function to set a PNG/JPG as the page background
 def set_png_as_page_bg(png_file):
     bin_str = get_base64_of_bin_file(png_file)
     page_bg_img = f"""
@@ -10,22 +14,24 @@ def set_png_as_page_bg(png_file):
     .stApp {{
         background-image: url("data:image/png;base64,{bin_str}");
         background-size: cover;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
     }}
     </style>
     """
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
-# Call the function with your image file name
-set_png_as_page_bg('Battleship Image.jpg') 
+# Set your background image
+set_png_as_page_bg('Battleship Image.jpg')
 
+# Optional: Style your h1 headers
 st.markdown("""
 <style>
 h1 {
-    background-color: #FFFFFF; /* Your desired background color */
-    color: white; /* Optional: change text color for better contrast */
-    padding: 10px; /* Optional: add some padding around the text */
-    border-radius: 5px; /* Optional round the corners */
-    #opacity: 0.8;
+    background-color: rgba(255, 255, 255, 0.8); /* White with transparency */
+    color: black; /* Text color */
+    padding: 10px;
+    border-radius: 5px;
 }
 </style>
 """, unsafe_allow_html=True)

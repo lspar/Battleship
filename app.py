@@ -21,17 +21,12 @@ def set_png_as_page_bg(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
 
 # Call the function with your image file name
-set_png_as_page_bg('/Users/madeleinelorentz/Desktop/cisc 108/Battleship Image.jpg') 
+set_png_as_page_bg('Battleship Image.jpg') 
 
 
 
 st.title("Battleship!")
 st.write("Each ship has a legnth of 2 and there could be 3-5 ships. Good Luck!")
-
-
-
-
-
 
 make_grid()
 

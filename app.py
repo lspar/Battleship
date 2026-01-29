@@ -1,10 +1,37 @@
 import streamlit as st
 import pandas as pd 
 from game import shoot, all_ships, make_grid, ship_tracker, shot_limit, shot_countdown
-import copy
+import base64
+
+def get_base64_of_bin_file(bin_file):
+    with open(bin_file, 'rb') as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+def set_png_as_page_bg(png_file):
+    bin_str = get_base64_of_bin_file(png_file)
+    page_bg_img = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/png;base64,{bin_str}");
+        background-size: cover;
+    }}
+    </style>
+    """
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# Call the function with your image file name
+set_png_as_page_bg('/Users/madeleinelorentz/Desktop/cisc 108/Battleship Image.jpg') 
+
+
 
 st.title("Battleship!")
 st.write("Each ship has a legnth of 2 and there could be 3-5 ships. Good Luck!")
+
+
+
+
+
 
 make_grid()
 

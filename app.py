@@ -106,12 +106,12 @@ with col2:
         st.warning(str(st.session_state.shots_remaining))
 
 
-df = pd.DataFrame(st.session_state.grid) #creates a table with the grid we made
+df = pd.DataFrame(st.session_state.grid)
 df_style = df.style.set_properties(**{
-    "background-color": "white",
-    "color": "black",
+    "background-color": "#1976D2",  # matches button/grid theme
+    "color": "white",
     "text-align": "center",
-    "border": "1px solid black"
+    "font-weight": "bold",
+    "border-radius": "5px"
 })
-
 st.dataframe(df_style)

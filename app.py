@@ -107,4 +107,11 @@ with col2:
 
 
 df = pd.DataFrame(st.session_state.grid) #creates a table with the grid we made
-st.table(df)
+df_style = df.style.set_properties(**{
+    "background-color": "white",
+    "color": "black",
+    "text-align": "center",
+    "border": "1px solid black"
+})
+
+st.dataframe(df_style)

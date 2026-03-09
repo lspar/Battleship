@@ -23,20 +23,90 @@ def set_png_as_page_bg(png_file):
 # Call the function with your image file name
 set_png_as_page_bg('Battleship Image.jpg') 
 
+# ---------------- Custom CSS for styling messages & labels ----------------
 st.markdown("""
+
+
 <style>
-h1 {
-    background-color: #FFFFFF; /* Your desired background color */
-    color: white; /* Optional: change text color for better contrast */
-    padding: 10px; /* Optional: add some padding around the text */
-    border-radius: 5px; /* Optional round the corners */
-    opacity: 0.8;
+/* Title styling */
+.stTitle {
+    background-color: rgba(25, 118, 210, 0.85);  /* dark blue with transparency */
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 42px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+}
+
+/* Instructions styling */
+.stInstructions {
+    background-color: rgba(255, 255, 255, 0.85); /* semi-transparent white */
+    color: #0D47A1;  /* dark blue text */
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 1px 1px 6px rgba(0,0,0,0.2);
+}
+.label-highlight {
+    font-weight: bold;
+    color: #1565C0;         /* dark blue text */
+    background-color: rgba(255, 255, 255, 0.85);  /* semi-transparent white */
+    padding: 4px 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 4px;
+}
+/* Ships Remaining / Shots Remaining labels */
+.bold-label {
+    background-color: #1565C0;  /* blue label background */
+    color: white;                /* white text */
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    display: inline-block;
+}
+
+/* Fire! and New Game buttons */
+div.stButton > button:first-child {
+    background-color: #1565C0;
+    color: white !important;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+div.stButton > button:first-child:disabled {
+    background-color: #90A4AE;
+    color: #333 !important;
+}
+
+/* Hit! / Miss! / Repeat! / Win / Loss messages: white bg + dark text */
+.stAlert, .hit-miss-msg {
+    background-color: rgba(255, 255, 255, 0.85) !important; /* semi-transparent white */
+    color: #0D47A1 !important;  /* dark blue text */
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    font-size: 16px;
+}
+
+/* Grid cells */
+.stDataFrame div[data-testid="stDataFrameContainer"] table td {
+    background-color: #1E88E5;  /* blue grid background */
+    color: white !important;     /* white numbers */
+    text-align: center;
+    font-weight: bold;
+    border-radius: 5px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-st.title("Battleship!", text_alignment="center")
-st.write("Each ship has a legnth of 2 and there could be 3-5 ships. Good Luck!")
+st.markdown('<div class="stTitle">Battleship!</div>', unsafe_allow_html=True)
+st.markdown('<div class="stInstructions">Each ship has a length of 2 and there could be 3-5 ships. Good Luck!</div>', unsafe_allow_html=True)
 
 make_grid()
 
@@ -73,9 +143,13 @@ def reset_game():
 if st.button("New Game"):
         reset_game()
 
+# Row label
+st.markdown('<div class="label-highlight">Row</div>', unsafe_allow_html=True)
+row = st.selectbox("", (0,1,2,3,4,5,6,7), key="row_select")
 
-row = st.selectbox("Row",(0,1,2,3,4,5,6,7))
-col = st.selectbox("Column", (0,1,2,3,4,5,6,7))
+# Column label
+st.markdown('<div class="label-highlight">Column</div>', unsafe_allow_html=True)
+col = st.selectbox("", (0,1,2,3,4,5,6,7), key="col_select")
 
 col1, col2 = st.columns(2, gap="small")
 
@@ -99,11 +173,16 @@ def play_game(selected_row, selected_col):
 
 play_game(row,col)
 
+
 with col2:
-        st.write("Ships Remaining: ")
-        st.info(str(st.session_state.ships_remaining))
-        st.write("Shots Remaining: ")
-        st.warning(str(st.session_state.shots_remaining))
+    # Ships Remaining label (keep blue background + white text)
+    st.markdown('<div class="bold-label">Ships Remaining:</div>', unsafe_allow_html=True)
+    # Ships Remaining value (white semi-transparent bg + dark text)
+    st.markdown(f'<div class="hit-miss-msg">{st.session_state.ships_remaining}</div>', unsafe_allow_html=True)
+    # Shots Remaining label
+    st.markdown('<div class="bold-label">Shots Remaining:</div>', unsafe_allow_html=True)
+    # Shots Remaining value
+    st.markdown(f'<div class="hit-miss-msg">{st.session_state.shots_remaining}</div>', unsafe_allow_html=True)
 
 
 df = pd.DataFrame(st.session_state.grid)
